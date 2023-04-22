@@ -1,0 +1,15 @@
+{% extends '../layout/layout.html' %}
+
+
+{% block content %}
+
+
+<div>
+    <p>{{random_item.name}}</p>
+    <p>views: {{random_item.number_visualizations}}</p>
+    <p>{{random_item.type}} rating: {{ random_item.rating }}</p>
+    <hr />
+</div>
+
+
+{% endblock %}

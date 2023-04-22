@@ -3,6 +3,7 @@
 """
 
 import random
+import requests
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import JsonResponse
 from django.forms.models import model_to_dict
@@ -94,7 +95,7 @@ def signout(request):
 
 def signin(request):
     if request.method == "GET":
-        return render(request, 'signin.html', {
+        return render(request, 'auth/signin.html', {
             'form': AuthenticationForm
         })
 
@@ -183,12 +184,25 @@ def productions(request):
 
 
 def movies(request):
-    return render(request, 'pages/movies.html')
+    response = requests.get('http://127.0.0.1:3001/api/v1/items/?type=movie')
+    movies = response.json()
+    print(movies)
+    return render(request, 'pages/movies.html', {
+        'movies': movies
+    })
 
 
 def series(request):
-    return render(request, 'pages/series.html')
+    response = requests.get('http://127.0.0.1:3001/api/v1/items/?type=serie')
+    series = response.json()
+    return render(request, 'pages/series.html', {
+        'series': series
+    })
 
 
 def random_production(request):
-    return render(request, 'pages/random.html')
+    response = requests.get('http://127.0.0.1:3001/api/v1/items/random')
+    random_item = response.json()
+    return render(request, 'pages/random.html', {
+        'random_item': random_item
+    })

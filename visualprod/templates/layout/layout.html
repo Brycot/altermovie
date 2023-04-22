@@ -14,7 +14,7 @@
                         <a href="{% url 'home'  %}"> Home </a>
                     </li>
                     <li>
-                        <a href="{% url 'home'  %}"> All Productions </a>
+                        <a href="{% url 'productions'  %}"> All Productions </a>
                     </li>
                     <li>
                         <a href="{% url 'movies'  %}"> Movies </a>
@@ -23,7 +23,7 @@
                         <a href="{% url 'series'  %}"> Series </a>
                     </li>
                     <li>
-                        <a href="{% url 'random'  %}"> Random </a>
+                        <a href="{% url 'random_production'  %}"> Random </a>
                     </li>
                     <li>
                         <a href="{% url 'signin'  %}"> Sign in </a>
@@ -38,10 +38,6 @@
             </nav>
         </header>
 
-        <main>
-            {% block content %} 
-            
-            {% endblock %}
-        </main>
+        {% block content %} {% endblock %}
     </body>
 </html>

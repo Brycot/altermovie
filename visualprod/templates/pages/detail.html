@@ -1,0 +1,31 @@
+{% extends '../layout/layout.html' %}
+
+
+{% block content %}
+
+
+<div>
+    <p>{{item.name}}</p>
+    <p>views: {{item.number_visualizations}}</p>
+    <p>{{item.type}} rating: {{ item.rating }}</p>
+
+    {% if item.viewed %}
+    <h1>Viewed</h1>
+    {% else %}
+    <form action="{% url 'viewed' item.id %}" method="POST">
+        {% csrf_token %}
+        <button>Mark as viewed</button>
+    </form>
+    {% endif %} {% if item.ratingUser %}
+    <p>Your rate: {{item.ratingUser}}</p>
+    {% else %}
+    <form action="{% url 'rate' item.id %}" method="POST">
+        {% csrf_token %} {{rate_form}}
+        <button type="submit">Save</button>
+    </form>
+    {% endif %}
+
+</div>
+
+
+{% endblock %}

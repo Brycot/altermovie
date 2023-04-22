@@ -1,0 +1,16 @@
+{% extends '../layout/layout.html' %}
+{% load static %}
+
+
+{% block content %}
+
+{% for movie in movies %}
+<div>
+    <p>{{movie.name}}</p>
+    <p>views: {{movie.number_visualizations}}</p>
+    <p>{{movie.type}} rating: {{ movie.rating }}</p>
+    <hr />
+</div>
+{% endfor %}
+
+{% endblock %}

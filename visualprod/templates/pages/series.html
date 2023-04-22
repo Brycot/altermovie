@@ -1,0 +1,15 @@
+{% extends '../layout/layout.html' %}
+
+
+{% block content %}
+
+{% for serie in series %}
+<div>
+    <p>{{serie.name}}</p>
+    <p>views: {{serie.number_visualizations}}</p>
+    <p>{{serie.type}} rating: {{ serie.rating }}</p>
+    <hr />
+</div>
+{% endfor %}
+
+{% endblock %}
