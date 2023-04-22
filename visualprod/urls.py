@@ -17,6 +17,7 @@ urlpatterns = [
     path('api/v1/items/<str:type_prod>/<str:order>/', views.get_order_visualprods, name='order'),
     
     # User interaction URLS
+    path('api/v1/userinteractions/<int:id>/',views.get_user_interactions, name='userinteractions'),
     path('api/v1/userinteractions/viewed/<int:id>/',views.mark_viewed, name='viewed'),
     path('api/v1/userinteractions/rate/<int:id>/',views.select_rate, name='rate'),
 

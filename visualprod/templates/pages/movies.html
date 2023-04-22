@@ -4,10 +4,32 @@
 
 {% block content %}
 
+<form method='POST'>
+    {% csrf_token %}
+    {{ order_form }}
+    <button type="submit">Order</button>
+</form>
+
 {% for movie in movies %}
 <div>
     <p>{{movie.name}}</p>
     <p>views: {{movie.number_visualizations}}</p>
+    <p>{{movie.type}} rating: {{ movie.rating }}</p>
+    {% if movie.viewed %}
+    <h1>Viewed</h1>
+    {% else %}
+    <form action="{% url 'viewed' movie.id %}" method="POST">
+        {% csrf_token %}
+        <button>Mark as viewed</button>
+    </form>
+    {% endif %} {% if movie.ratingUser %}
+    <p>Your rate: {{movie.ratingUser}}</p>
+    {% else %}
+    <form action="{% url 'rate' movie.id %}" method="POST">
+        {% csrf_token %} {{rate_form}}
+        <button type="submit">Save</button>
+    </form>
+    {% endif %}
     <p>{{movie.type}} rating: {{ movie.rating }}</p>
     <hr />
 </div>

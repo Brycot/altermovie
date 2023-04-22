@@ -3,10 +3,33 @@
 
 {% block content %}
 
+<form method='POST'>
+    {% csrf_token %}
+    {{ order_form }}
+    <button type="submit">Order</button>
+
+</form>
+
 {% for serie in series %}
 <div>
     <p>{{serie.name}}</p>
     <p>views: {{serie.number_visualizations}}</p>
+    <p>{{serie.type}} rating: {{ serie.rating }}</p>
+    {% if serie.viewed %}
+    <h1>Viewed</h1>
+    {% else %}
+    <form action="{% url 'viewed' serie.id %}" method="POST">
+        {% csrf_token %}
+        <button>Mark as viewed</button>
+    </form>
+    {% endif %} {% if serie.ratingUser %}
+    <p>Your rate: {{serie.ratingUser}}</p>
+    {% else %}
+    <form action="{% url 'rate' serie.id %}" method="POST">
+        {% csrf_token %} {{rate_form}}
+        <button type="submit">Save</button>
+    </form>
+    {% endif %}
     <p>{{serie.type}} rating: {{ serie.rating }}</p>
     <hr />
 </div>

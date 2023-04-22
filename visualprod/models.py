@@ -26,8 +26,6 @@ class VisualProd(models.Model):
     number_visualizations = models.IntegerField(default=0)
     rating = models.FloatField(default=0)
 
-    def message():
-        return 'Hello World!'
     def __str__(self):
         return self.name + ' - ' + self.genre + ' - ' + self.type + ' - ' + str(self.rating)
 

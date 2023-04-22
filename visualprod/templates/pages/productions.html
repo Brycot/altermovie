@@ -1,32 +1,49 @@
-{% extends '../layout/layout.html' %}
+{% extends '../layout/layout.html' %} 
 
+{% block content %} 
+<main class="container justify-content-center d-flex flex-wrap gap-3 py-5">
 
-{% block content %}
-
-
-{% for visual_prod in visual_prods %}
-<div>
-    <p>{{visual_prod.name}}</p>
-    <p>views: {{visual_prod.number_visualizations}}</p>
-    {% if visual_prod.viewed %}
-    <h1>Viewed</h1>
-    {% else %}
-    <form action="{% url 'viewed' visual_prod.id %}" method="POST">
-        {% csrf_token %}
-        <button>Mark as viewed</button>
-    </form>
-    {% endif %} {% if visual_prod.ratingUser %}
-    <p>Your rate: {{visual_prod.ratingUser}}</p>
-    {% else %}
-    <form action="{% url 'rate' visual_prod.id %}" method="POST">
-        {% csrf_token %} {{rate_form}}
-        <button type="submit">Save</button>
-    </form>
-    {% endif %}
-    <p>{{visual_prod.type}} rating: {{ visual_prod.rating }}</p>
-    <hr />
+    {% for visual_prod in visual_prods %}
+    
+    <div class="card shadow-sm" style="width: 18rem">
+        <img
+        class="card-img-top"
+        src="https://web9.unl.edu.ar/noticias/img/thumbs/news/37787/foto%20peli_vga.jpg"
+        alt=""
+        />
+        <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center">
+                <span>
+                    <p class="lh-1 card-title fs-5 fw-bolder">{{visual_prod.name}}</p>
+                    <p class="lh-1 text-body-secondary fs-6" >{{visual_prod.genre}}</p>
+                </span>
+                <span>⭐ {{ visual_prod.rating }}/5.0</span>
+            </div>
+            <p class="card-text">views: {{visual_prod.number_visualizations}}</p>
+            <div class="d-flex justify-content-between align-items-center" >
+                {% comment %} validate the state of viewed {% endcomment %}
+                {% if visual_prod.viewed %}
+                    <p class="card-text m-0 text-light bg-danger rounded py-1 px-2">Viewed</p>
+                {% else %}
+                    <form action="{% url 'viewed' visual_prod.id %}" method="POST">
+                        {% csrf_token %}
+                        <button class="border border-2 border-danger rounded">Mark as viewed</button>
+                    </form>
+                {% endif %}
+                    {% comment %} validate the state of rated {% endcomment %}
+                {% if visual_prod.ratingUser %}
+                    <p class="card-text">Your rate: <span class="fw-bold">{{visual_prod.ratingUser}}</span></p>
+                {% else %}
+                    <form action="{% url 'rate' visual_prod.id %}" method="POST">
+                        {% csrf_token %} {{rate_form}}
+                        <button class="border border-2 border-success rounded" type="submit">Save</button>
+                    </form>
+                {% endif %}
+            </div>
+    </div>
 </div>
-{% endfor %}
 
+{% endfor %} 
+</main>
 
 {% endblock %}

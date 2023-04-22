@@ -1,15 +1,25 @@
-{% extends '../layout/layout.html' %}
-
-
-{% block content %}
-
+{% extends '../layout/layout.html' %} {% block content %}
 
 <div>
     <p>{{random_item.name}}</p>
     <p>views: {{random_item.number_visualizations}}</p>
     <p>{{random_item.type}} rating: {{ random_item.rating }}</p>
+    {% if random_item.viewed %}
+    <h1>Viewed</h1>
+    {% else %}
+    <form action="{% url 'viewed' random_item.id %}" method="POST">
+        {% csrf_token %}
+        <button>Mark as viewed</button>
+    </form>
+    {% endif %} {% if random_item.ratingUser %}
+    <p>Your rate: {{random_item.ratingUser}}</p>
+    {% else %}
+    <form action="{% url 'rate' random_item.id %}" method="POST">
+        {% csrf_token %} {{rate_form}}
+        <button type="submit">Save</button>
+    </form>
+    {% endif %}
     <hr />
 </div>
-
 
 {% endblock %}
