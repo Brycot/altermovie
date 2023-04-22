@@ -1,0 +1,9 @@
+<h1>Signin</h1>
+
+{{error}}
+
+<form action="/signin/" method="POST">
+    {% csrf_token %} 
+    {{form.as_p}}
+    <button class="btn btn-primary" type="submit">Signin</button>
+</form>
