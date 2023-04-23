@@ -174,30 +174,35 @@ def home(request):
 def productions(request):
     visual_prods = []
 
-    if request.method == 'GET':
+    try:
+        if request.method == 'GET':
         response_visual = requests.get('http://127.0.0.1:3001/api/v1/items/')
         visual_prods = response_visual.json()
-    # if request.method == 'POST':
-    #     search = request.POST['search']
-    #     response = requests.get(f'http://127.0.0.1:3001/api/v1/items/?name={search}')
-    #     visual_prods = response.json()
+        if request.method == 'POST':
+        search = request.POST['search']
+        response = requests.get(f'http://127.0.0.1:3001/api/v1/items/?name={search}')
+        visual_prods = response.json()
 
-    # response_user_interactions = requests.get(
-    #     f'http://127.0.0.1:3001/api/v1/userinteractions/{request.user.id}')
-    # user_interactions = response_user_interactions.json()
+        response_user_interactions = requests.get(
+        f'http://127.0.0.1:3001/api/v1/userinteractions/{request.user.id}')
+        user_interactions = response_user_interactions.json()
 
-    # for interaction in user_interactions['visual_prods_user']:
-    #     try:
-    #         index = visual_prods.index(interaction)
-    #         user_interaction = list(filter(
-    #             lambda x: x['visual_prod_id'] == interaction['id'], user_interactions['visual_prods']))
-    #         visual_prods[index] = {
-    #             **visual_prods[index],
-    #             'viewed': user_interaction[0]['viewed'],
-    #             'ratingUser': user_interaction[0]['rating'],
-    #         }
-    #     except:
-    #         continue
+        for interaction in user_interactions['visual_prods_user']:
+            try:
+                index = visual_prods.index(interaction)
+                user_interaction = list(filter(
+                    lambda x: x['visual_prod_id'] == interaction['id'], user_interactions['visual_prods']))
+                visual_prods[index] = {
+                    **visual_prods[index],
+                    'viewed': user_interaction[0]['viewed'],
+                    'ratingUser': user_interaction[0]['rating'],
+                }
+            except:
+                continue
+    except:
+        return render(request, 'pages/productions.html', {
+            'visual_prods': visual_prods,
+        })
 
     return render(request, 'pages/productions.html', {
         'visual_prods': visual_prods,
