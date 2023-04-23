@@ -9,7 +9,6 @@ from django.http import JsonResponse
 from django.forms.models import model_to_dict
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.db import IntegrityError
-from django.db.models import Prefetch
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
@@ -175,9 +174,9 @@ def home(request):
 def productions(request):
     visual_prods = []
 
-    # if request.method == 'GET':
-    #     response_visual = requests.get('http://127.0.0.1:3001/api/v1/items/')
-    #     visual_prods = response_visual.json()
+    if request.method == 'GET':
+        response_visual = requests.get('http://127.0.0.1:3001/api/v1/items/')
+        visual_prods = response_visual.json()
     # if request.method == 'POST':
     #     search = request.POST['search']
     #     response = requests.get(f'http://127.0.0.1:3001/api/v1/items/?name={search}')
