@@ -176,15 +176,15 @@ def productions(request):
 
     try:
         if request.method == 'GET':
-            response_visual = requests.get('http://127.0.0.1:3001/api/v1/items/', timeout=2000)
+            response_visual = requests.get('https://altermovie-project.onrender.com//api/v1/items/', timeout=5)
             visual_prods = response_visual.json()
         if request.method == 'POST':
             search = request.POST['search']
-            response = requests.get(f'http://127.0.0.1:3001/api/v1/items/?name={search}', timeout=2000)
+            response = requests.get(f'https://altermovie-project.onrender.com//api/v1/items/?name={search}', timeout=5)
             visual_prods = response.json()
 
         response_user_interactions = requests.get(
-        f'http://127.0.0.1:3001/api/v1/userinteractions/{request.user.id}', timeout=2000)
+        f'https://altermovie-project.onrender.com//api/v1/userinteractions/{request.user.id}', timeout=5)
         user_interactions = response_user_interactions.json()
 
         for interaction in user_interactions['visual_prods_user']:
@@ -216,16 +216,16 @@ def movies(request):
 
     if request.method == 'GET':
         response = requests.get(
-            'http://127.0.0.1:3001/api/v1/items/?type=movie', timeout=2000)
+            'https://altermovie-project.onrender.com/api/v1/items/?type=movie', timeout=2000)
         all_movies = response.json()
     if request.method == 'POST':
         order = request.POST['order_by']
         response = requests.get(
-            f'http://127.0.0.1:3001/api/v1/items/Movie/{order}/')
+            f'https://altermovie-project.onrender.com/api/v1/items/Movie/{order}/')
         all_movies = response.json()
 
     response_user_interactions = requests.get(
-        f'http://127.0.0.1:3001/api/v1/userinteractions/{request.user.id}')
+        f'https://altermovie-project.onrender.com/api/v1/userinteractions/{request.user.id}')
     user_interactions = response_user_interactions.json()
 
     for interaction in user_interactions['visual_prods_user']:
@@ -254,16 +254,16 @@ def series(request):
     all_series = []
     if request.method == 'GET':
         response = requests.get(
-            'http://127.0.0.1:3001/api/v1/items/?type=serie')
+            'https://altermovie-project.onrender.com/api/v1/items/?type=serie')
         all_series = response.json()
     if request.method == 'POST':
         order = request.POST['order_by']
         response = requests.get(
-            f'http://127.0.0.1:3001/api/v1/items/Serie/{order}/')
+            f'https://altermovie-project.onrender.com/api/v1/items/Serie/{order}/')
         all_series = response.json()
 
     response_user_interactions = requests.get(
-        f'http://127.0.0.1:3001/api/v1/userinteractions/{request.user.id}')
+        f'https://altermovie-project.onrender.com/api/v1/userinteractions/{request.user.id}')
     user_interactions = response_user_interactions.json()
 
     for interaction in user_interactions['visual_prods_user']:
@@ -289,11 +289,11 @@ def series(request):
 
 
 def random_production(request):
-    response = requests.get('http://127.0.0.1:3001/api/v1/items/random')
+    response = requests.get('https://altermovie-project.onrender.com/api/v1/items/random')
     random_item = response.json()
 
     response_user_interactions = requests.get(
-        f'http://127.0.0.1:3001/api/v1/userinteractions/{request.user.id}')
+        f'https://altermovie-project.onrender.com/api/v1/userinteractions/{request.user.id}')
 
     user_interactions = response_user_interactions.json()
 
