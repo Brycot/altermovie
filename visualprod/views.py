@@ -176,15 +176,17 @@ def productions(request):
 
     try:
         if request.method == 'GET':
-            response_visual = requests.get('https://altermovie-project.onrender.com//api/v1/items/', timeout=5)
+            response_visual = requests.get(
+                'https://altermovie-project.onrender.com//api/v1/items/', timeout=5)
             visual_prods = response_visual.json()
         if request.method == 'POST':
             search = request.POST['search']
-            response = requests.get(f'https://altermovie-project.onrender.com//api/v1/items/?name={search}', timeout=5)
+            response = requests.get(
+                f'https://altermovie-project.onrender.com//api/v1/items/?name={search}', timeout=5)
             visual_prods = response.json()
 
         response_user_interactions = requests.get(
-        f'https://altermovie-project.onrender.com//api/v1/userinteractions/{request.user.id}', timeout=5)
+            f'https://altermovie-project.onrender.com//api/v1/userinteractions/{request.user.id}', timeout=5)
         user_interactions = response_user_interactions.json()
 
         for interaction in user_interactions['visual_prods_user']:
@@ -202,6 +204,8 @@ def productions(request):
     except:
         return render(request, 'pages/productions.html', {
             'visual_prods': visual_prods,
+            'rate_form': RateVideoProduction,
+            'search_form': SearchProductions
         })
 
     return render(request, 'pages/productions.html', {
@@ -214,34 +218,41 @@ def productions(request):
 def movies(request):
     all_movies = []
 
-    if request.method == 'GET':
-        response = requests.get(
-            'https://altermovie-project.onrender.com/api/v1/items/?type=movie', timeout=2000)
-        all_movies = response.json()
-    if request.method == 'POST':
-        order = request.POST['order_by']
-        response = requests.get(
-            f'https://altermovie-project.onrender.com/api/v1/items/Movie/{order}/')
-        all_movies = response.json()
+    try:
+        if request.method == 'GET':
+            response = requests.get(
+                'https://altermovie-project.onrender.com/api/v1/items/?type=movie', timeout=5)
+            all_movies = response.json()
+        if request.method == 'POST':
+            order = request.POST['order_by']
+            response = requests.get(
+                f'https://altermovie-project.onrender.com/api/v1/items/Movie/{order}/', timeout=5)
+            all_movies = response.json()
 
-    response_user_interactions = requests.get(
-        f'https://altermovie-project.onrender.com/api/v1/userinteractions/{request.user.id}')
-    user_interactions = response_user_interactions.json()
+        response_user_interactions = requests.get(
+            f'https://altermovie-project.onrender.com/api/v1/userinteractions/{request.user.id}', timeout=5)
+        user_interactions = response_user_interactions.json()
 
-    for interaction in user_interactions['visual_prods_user']:
-        try:
-            index = all_movies.index(interaction)
+        for interaction in user_interactions['visual_prods_user']:
+            try:
+                index = all_movies.index(interaction)
 
-            user_interaction = list(filter(
-                lambda x: x['visual_prod_id'] == interaction['id'], user_interactions['visual_prods']))
+                user_interaction = list(filter(
+                    lambda x: x['visual_prod_id'] == interaction['id'], user_interactions['visual_prods']))
 
-            all_movies[index] = {
-                **all_movies[index],
-                'viewed': user_interaction[0]['viewed'],
-                'ratingUser': user_interaction[0]['rating'],
-            }
-        except:
-            continue
+                all_movies[index] = {
+                    **all_movies[index],
+                    'viewed': user_interaction[0]['viewed'],
+                    'ratingUser': user_interaction[0]['rating'],
+                }
+            except:
+                continue
+    except:
+        return render(request, 'pages/movies.html', {
+            'movies': all_movies,
+            'rate_form': RateVideoProduction,
+            'order_form': OrderProductions
+        })
 
     return render(request, 'pages/movies.html', {
         'movies': all_movies,
@@ -252,35 +263,41 @@ def movies(request):
 
 def series(request):
     all_series = []
-    if request.method == 'GET':
-        response = requests.get(
-            'https://altermovie-project.onrender.com/api/v1/items/?type=serie')
-        all_series = response.json()
-    if request.method == 'POST':
-        order = request.POST['order_by']
-        response = requests.get(
-            f'https://altermovie-project.onrender.com/api/v1/items/Serie/{order}/')
-        all_series = response.json()
+    try:
+        if request.method == 'GET':
+            response = requests.get(
+                'https://altermovie-project.onrender.com/api/v1/items/?type=serie', timeout=5)
+            all_series = response.json()
+        if request.method == 'POST':
+            order = request.POST['order_by']
+            response = requests.get(
+                f'https://altermovie-project.onrender.com/api/v1/items/Serie/{order}/', timeout=5)
+            all_series = response.json()
 
-    response_user_interactions = requests.get(
-        f'https://altermovie-project.onrender.com/api/v1/userinteractions/{request.user.id}')
-    user_interactions = response_user_interactions.json()
+        response_user_interactions = requests.get(
+            f'https://altermovie-project.onrender.com/api/v1/userinteractions/{request.user.id}', timeout=5)
+        user_interactions = response_user_interactions.json()
 
-    for interaction in user_interactions['visual_prods_user']:
-        try:
-            index = all_series.index(interaction)
+        for interaction in user_interactions['visual_prods_user']:
+            try:
+                index = all_series.index(interaction)
 
-            user_interaction = list(filter(
-                lambda x: x['visual_prod_id'] == interaction['id'], user_interactions['visual_prods']))
+                user_interaction = list(filter(
+                    lambda x: x['visual_prod_id'] == interaction['id'], user_interactions['visual_prods']))
 
-            all_series[index] = {
-                **all_series[index],
-                'viewed': user_interaction[0]['viewed'],
-                'ratingUser': user_interaction[0]['rating'],
-            }
-        except:
-            continue
-
+                all_series[index] = {
+                    **all_series[index],
+                    'viewed': user_interaction[0]['viewed'],
+                    'ratingUser': user_interaction[0]['rating'],
+                }
+            except:
+                continue
+    except:
+        return render(request, 'pages/series.html', {
+            'series': all_series,
+            'rate_form': RateVideoProduction,
+            'order_form': OrderProductions
+        })
     return render(request, 'pages/series.html', {
         'series': all_series,
         'rate_form': RateVideoProduction,
@@ -289,11 +306,12 @@ def series(request):
 
 
 def random_production(request):
-    response = requests.get('https://altermovie-project.onrender.com/api/v1/items/random')
+    response = requests.get(
+        'https://altermovie-project.onrender.com/api/v1/items/random', timeout=5)
     random_item = response.json()
 
     response_user_interactions = requests.get(
-        f'https://altermovie-project.onrender.com/api/v1/userinteractions/{request.user.id}')
+        f'https://altermovie-project.onrender.com/api/v1/userinteractions/{request.user.id}', timeout=5)
 
     user_interactions = response_user_interactions.json()
 
