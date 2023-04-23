@@ -176,12 +176,12 @@ def productions(request):
 
     try:
         if request.method == 'GET':
-        response_visual = requests.get('http://127.0.0.1:3001/api/v1/items/')
-        visual_prods = response_visual.json()
+            response_visual = requests.get('http://127.0.0.1:3001/api/v1/items/')
+            visual_prods = response_visual.json()
         if request.method == 'POST':
-        search = request.POST['search']
-        response = requests.get(f'http://127.0.0.1:3001/api/v1/items/?name={search}')
-        visual_prods = response.json()
+            search = request.POST['search']
+            response = requests.get(f'http://127.0.0.1:3001/api/v1/items/?name={search}')
+            visual_prods = response.json()
 
         response_user_interactions = requests.get(
         f'http://127.0.0.1:3001/api/v1/userinteractions/{request.user.id}')
