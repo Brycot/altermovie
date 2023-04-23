@@ -176,15 +176,15 @@ def productions(request):
 
     try:
         if request.method == 'GET':
-            response_visual = requests.get('http://127.0.0.1:3001/api/v1/items/')
+            response_visual = requests.get('http://127.0.0.1:3001/api/v1/items/', timeout=2000)
             visual_prods = response_visual.json()
         if request.method == 'POST':
             search = request.POST['search']
-            response = requests.get(f'http://127.0.0.1:3001/api/v1/items/?name={search}')
+            response = requests.get(f'http://127.0.0.1:3001/api/v1/items/?name={search}', timeout=2000)
             visual_prods = response.json()
 
         response_user_interactions = requests.get(
-        f'http://127.0.0.1:3001/api/v1/userinteractions/{request.user.id}')
+        f'http://127.0.0.1:3001/api/v1/userinteractions/{request.user.id}', timeout=2000)
         user_interactions = response_user_interactions.json()
 
         for interaction in user_interactions['visual_prods_user']:
@@ -206,8 +206,8 @@ def productions(request):
 
     return render(request, 'pages/productions.html', {
         'visual_prods': visual_prods,
-        # 'rate_form': RateVideoProduction,
-        # 'search_form': SearchProductions
+        'rate_form': RateVideoProduction,
+        'search_form': SearchProductions
     })
 
 
@@ -216,7 +216,7 @@ def movies(request):
 
     if request.method == 'GET':
         response = requests.get(
-            'http://127.0.0.1:3001/api/v1/items/?type=movie')
+            'http://127.0.0.1:3001/api/v1/items/?type=movie', timeout=2000)
         all_movies = response.json()
     if request.method == 'POST':
         order = request.POST['order_by']
