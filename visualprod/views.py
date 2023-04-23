@@ -176,16 +176,15 @@ def productions(request):
 
     if request.method == 'GET':
         response_visual = requests.get(
-            'https://altermovie-project.onrender.com/api/v1/items/', timeout=5)
+            'https://altermovie-project.onrender.com/api/v1/items/', timeout=10)
         visual_prods = response_visual.json()
-        print(visual_prods)
     if request.method == 'POST':
         search = request.POST['search']
         response = requests.get(
-            f'https://altermovie-project.onrender.com/api/v1/items/?name={search}',timeout=5)
+            f'https://altermovie-project.onrender.com/api/v1/items/?name={search}',timeout=10)
         visual_prods = response.json()
     response_user_interactions = requests.get(
-        f'https://altermovie-project.onrender.com/api/v1/userinteractions/{request.user.id}',timeout = 5)
+        f'https://altermovie-project.onrender.com/api/v1/userinteractions/{request.user.id}',timeout = 10)
     user_interactions = response_user_interactions.json()
     for interaction in user_interactions['visual_prods_user']:
         try:
