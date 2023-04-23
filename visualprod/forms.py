@@ -23,3 +23,6 @@ class OrderProductions(forms.Form):
         ('genre', 'Genre'),
     ]
     order_by = forms.ChoiceField(choices=order_choices, widget=forms.Select())
+
+class SearchProductions(forms.Form):
+    search = forms.CharField(max_length=100)

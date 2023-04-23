@@ -1,38 +1,67 @@
 {% extends '../layout/layout.html' %}
+{% load static %}
 
 
 {% block content %}
+<main class="container">
 
-<form method='POST'>
-    {% csrf_token %}
-    {{ order_form }}
-    <button type="submit">Order</button>
+    <section class="container py-5">
+        <article class="d-flex justify-content-center mb-4">
 
-</form>
+            <form  method='POST'>
+                {% csrf_token %}
+                {{ order_form }}
+                <button class="border border-2 border-success rounded" type="submit">Order</button>
+            </form>
+        </article>
+    <article class="container justify-content-center d-flex flex-wrap gap-3">
 
-{% for serie in series %}
-<div>
-    <p>{{serie.name}}</p>
-    <p>views: {{serie.number_visualizations}}</p>
-    <p>{{serie.type}} rating: {{ serie.rating }}</p>
-    {% if serie.viewed %}
-    <h1>Viewed</h1>
-    {% else %}
-    <form action="{% url 'viewed' serie.id %}" method="POST">
-        {% csrf_token %}
-        <button>Mark as viewed</button>
-    </form>
-    {% endif %} {% if serie.ratingUser %}
-    <p>Your rate: {{serie.ratingUser}}</p>
-    {% else %}
-    <form action="{% url 'rate' serie.id %}" method="POST">
-        {% csrf_token %} {{rate_form}}
-        <button type="submit">Save</button>
-    </form>
-    {% endif %}
-    <p>{{serie.type}} rating: {{ serie.rating }}</p>
-    <hr />
-</div>
-{% endfor %}
+    {% for serie in series %}
+        <div class="card shadow-sm" style="width: 18rem">
+            <img
+            class="card-img-top"
+            src="{{serie.image}}"
+            alt=""
+            />
+
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <span>
+                        <p class="lh-1 card-title fs-5 fw-bolder">{{serie.name}}</p>
+                        <p class="lh-1 text-body-secondary fs-6" >{{serie.genre}}</p>
+                    </span>
+                    <span>⭐ {{ serie.rating }}/5.0</span>
+                </div>
+
+                <p class="card-text">views: {{serie.number_visualizations}}</p>
+
+                <div class="d-flex justify-content-between align-items-center" >
+                    {% comment %} validate the state of viewed {% endcomment %}
+                    {% if serie.viewed %}
+                        <p class="card-text m-0 text-light bg-danger rounded py-1 px-2">Viewed</p>
+                    {% else %}
+                        <form action="{% url 'viewed' serie.id %}" method="POST">
+                            {% csrf_token %}
+                            <button class="border border-2 border-danger rounded">Mark as viewed</button>
+                        </form>
+                    {% endif %}
+                        {% comment %} validate the state of rated {% endcomment %}
+                    {% if serie.ratingUser %}
+                        <p class="card-text">Your rate: <span class="fw-bold">{{serie.ratingUser}}</span></p>
+                    {% else %}
+                        <form action="{% url 'rate' serie.id %}" method="POST">
+                            {% csrf_token %} {{rate_form}}
+                            <button class="border border-2 border-success rounded" type="submit">Save</button>
+                        </form>
+                    {% endif %}
+                </div>
+
+            </div>
+        </div>
+    {% endfor %}
+    </article>
+
+</section>
+</main>
 
 {% endblock %}

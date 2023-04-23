@@ -1,25 +1,60 @@
-{% extends '../layout/layout.html' %} {% block content %}
+{% extends '../layout/layout.html' %}
+{% load static %}
 
-<div>
-    <p>{{random_item.name}}</p>
-    <p>views: {{random_item.number_visualizations}}</p>
-    <p>{{random_item.type}} rating: {{ random_item.rating }}</p>
-    {% if random_item.viewed %}
-    <h1>Viewed</h1>
-    {% else %}
-    <form action="{% url 'viewed' random_item.id %}" method="POST">
-        {% csrf_token %}
-        <button>Mark as viewed</button>
-    </form>
-    {% endif %} {% if random_item.ratingUser %}
-    <p>Your rate: {{random_item.ratingUser}}</p>
-    {% else %}
-    <form action="{% url 'rate' random_item.id %}" method="POST">
-        {% csrf_token %} {{rate_form}}
-        <button type="submit">Save</button>
-    </form>
-    {% endif %}
-    <hr />
-</div>
+
+{% block content %}
+<main class="container">
+
+    <section class="container py-5">
+
+    <article class="container justify-content-center d-flex flex-wrap gap-3">
+
+
+        <div class="card shadow-sm" style="width: 18rem">
+            <img
+            class="card-img-top"
+            src="https://web9.unl.edu.ar/noticias/img/thumbs/news/37787/foto%20peli_vga.jpg"
+            alt=""
+            />
+
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <span>
+                        <p class="lh-1 card-title fs-5 fw-bolder">{{random_item.name}}</p>
+                        <p class="lh-1 text-body-secondary fs-6" >{{random_item.genre}}</p>
+                    </span>
+                    <span>⭐ {{ random_item.rating }}/5.0</span>
+                </div>
+
+                <p class="card-text">views: {{random_item.number_visualizations}}</p>
+
+                <div class="d-flex justify-content-between align-items-center" >
+                    {% comment %} validate the state of viewed {% endcomment %}
+                    {% if random_item.viewed %}
+                        <p class="card-text m-0 text-light bg-danger rounded py-1 px-2">Viewed</p>
+                    {% else %}
+                        <form action="{% url 'viewed' random_item.id %}" method="POST">
+                            {% csrf_token %}
+                            <button class="border border-2 border-danger rounded">Mark as viewed</button>
+                        </form>
+                    {% endif %}
+                        {% comment %} validate the state of rated {% endcomment %}
+                    {% if random_item.ratingUser %}
+                        <p class="card-text">Your rate: <span class="fw-bold">{{random_item.ratingUser}}</span></p>
+                    {% else %}
+                        <form action="{% url 'rate' random_item.id %}" method="POST">
+                            {% csrf_token %} {{rate_form}}
+                            <button class="border border-2 border-success rounded" type="submit">Save</button>
+                        </form>
+                    {% endif %}
+                </div>
+
+            </div>
+        </div>
+
+    </article>
+
+</section>
+</main>
 
 {% endblock %}

@@ -3,36 +3,65 @@
 
 
 {% block content %}
+<main class="container">
 
-<form method='POST'>
-    {% csrf_token %}
-    {{ order_form }}
-    <button type="submit">Order</button>
-</form>
+    <section class="container py-5">
+        <article class="d-flex justify-content-center mb-4">
 
-{% for movie in movies %}
-<div>
-    <p>{{movie.name}}</p>
-    <p>views: {{movie.number_visualizations}}</p>
-    <p>{{movie.type}} rating: {{ movie.rating }}</p>
-    {% if movie.viewed %}
-    <h1>Viewed</h1>
-    {% else %}
-    <form action="{% url 'viewed' movie.id %}" method="POST">
-        {% csrf_token %}
-        <button>Mark as viewed</button>
-    </form>
-    {% endif %} {% if movie.ratingUser %}
-    <p>Your rate: {{movie.ratingUser}}</p>
-    {% else %}
-    <form action="{% url 'rate' movie.id %}" method="POST">
-        {% csrf_token %} {{rate_form}}
-        <button type="submit">Save</button>
-    </form>
-    {% endif %}
-    <p>{{movie.type}} rating: {{ movie.rating }}</p>
-    <hr />
-</div>
-{% endfor %}
+            <form  method='POST'>
+                {% csrf_token %}
+                {{ order_form }}
+                <button class="border border-2 border-success rounded" type="submit">Order</button>
+            </form>
+        </article>
+    <article class="container justify-content-center d-flex flex-wrap gap-3">
+
+    {% for movie in movies %}
+        <div class="card shadow-sm" style="width: 18rem">
+            <img
+            class="card-img-top"
+            src="{{movie.image}}"
+            alt=""
+            />
+
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <span>
+                        <p class="lh-1 card-title fs-5 fw-bolder">{{movie.name}}</p>
+                        <p class="lh-1 text-body-secondary fs-6" >{{movie.genre}}</p>
+                    </span>
+                    <span>⭐ {{ movie.rating }}/5.0</span>
+                </div>
+
+                <p class="card-text">views: {{movie.number_visualizations}}</p>
+
+                <div class="d-flex justify-content-between align-items-center" >
+                    {% comment %} validate the state of viewed {% endcomment %}
+                    {% if movie.viewed %}
+                        <p class="card-text m-0 text-light bg-danger rounded py-1 px-2">Viewed</p>
+                    {% else %}
+                        <form action="{% url 'viewed' movie.id %}" method="POST">
+                            {% csrf_token %}
+                            <button class="border border-2 border-danger rounded">Mark as viewed</button>
+                        </form>
+                    {% endif %}
+                        {% comment %} validate the state of rated {% endcomment %}
+                    {% if movie.ratingUser %}
+                        <p class="card-text">Your rate: <span class="fw-bold">{{movie.ratingUser}}</span></p>
+                    {% else %}
+                        <form action="{% url 'rate' movie.id %}" method="POST">
+                            {% csrf_token %} {{rate_form}}
+                            <button class="border border-2 border-success rounded" type="submit">Save</button>
+                        </form>
+                    {% endif %}
+                </div>
+
+            </div>
+        </div>
+    {% endfor %}
+    </article>
+
+</section>
+</main>
 
 {% endblock %}

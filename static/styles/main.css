@@ -1,0 +1,16 @@
+.main-home {
+    width: 100%;
+    height: calc(100vh - 56px);
+    overflow: hidden;
+}
+
+.hex {
+    clip-path: circle(40.3% at 50% 50%);
+    overflow: hidden;
+    height: 100%;
+    left: 0;
+    transform: translateY(50%);
+    transform: translatex(30%);
+    display: flex;
+    justify-content: center;
+}

@@ -14,7 +14,7 @@ from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from .models import VisualProd, UserInteraction
-from .forms import RateVideoProduction, OrderProductions
+from .forms import RateVideoProduction, OrderProductions, SearchProductions
 # ============================================
 # Routes for Audiovisual Producctions
 # ============================================
@@ -173,45 +173,51 @@ def home(request):
 
 
 def productions(request):
+    visual_prods = []
 
-    response_visual = requests.get('http://127.0.0.1:3001/api/v1/items/')
-    visual_prods = response_visual.json()
+    if request.method == 'GET':
+        response_visual = requests.get('http://127.0.0.1:3001/api/v1/items/')
+        visual_prods = response_visual.json()
+    if request.method == 'POST':
+        search = request.POST['search']
+        response = requests.get(f'http://127.0.0.1:3001/api/v1/items/?name={search}')
+        visual_prods = response.json()
 
     response_user_interactions = requests.get(
         f'http://127.0.0.1:3001/api/v1/userinteractions/{request.user.id}')
     user_interactions = response_user_interactions.json()
 
     for interaction in user_interactions['visual_prods_user']:
-        index = visual_prods.index(interaction)
-
-        user_interaction = list(filter(
-            lambda x: x['visual_prod_id'] == interaction['id'], user_interactions['visual_prods']))
-
-        visual_prods[index] = {
-            **visual_prods[index],
-            'viewed': user_interaction[0]['viewed'],
-            'ratingUser': user_interaction[0]['rating'],
-        }
+        try:
+            index = visual_prods.index(interaction)
+            user_interaction = list(filter(
+                lambda x: x['visual_prod_id'] == interaction['id'], user_interactions['visual_prods']))
+            visual_prods[index] = {
+                **visual_prods[index],
+                'viewed': user_interaction[0]['viewed'],
+                'ratingUser': user_interaction[0]['rating'],
+            }
+        except:
+            continue
 
     return render(request, 'pages/productions.html', {
         'visual_prods': visual_prods,
-        'rate_form': RateVideoProduction
+        'rate_form': RateVideoProduction,
+        'search_form': SearchProductions
     })
 
 
 def movies(request):
     all_movies = []
+
     if request.method == 'GET':
         response = requests.get(
             'http://127.0.0.1:3001/api/v1/items/?type=movie')
         all_movies = response.json()
     if request.method == 'POST':
         order = request.POST['order_by']
-        print('====================================')
-        print(order)
-        print('====================================')
         response = requests.get(
-            f'http://127.0.0.1:3001/api/v1/items/movie/{order}/')
+            f'http://127.0.0.1:3001/api/v1/items/Movie/{order}/')
         all_movies = response.json()
 
     response_user_interactions = requests.get(
@@ -248,11 +254,8 @@ def series(request):
         all_series = response.json()
     if request.method == 'POST':
         order = request.POST['order_by']
-        print('====================================')
-        print(order)
-        print('====================================')
         response = requests.get(
-            f'http://127.0.0.1:3001/api/v1/items/serie/{order}/')
+            f'http://127.0.0.1:3001/api/v1/items/Serie/{order}/')
         all_series = response.json()
 
     response_user_interactions = requests.get(

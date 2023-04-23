@@ -23,6 +23,7 @@ class VisualProd(models.Model):
         max_length=5,
         choices=TYPE_CHOICES
     )
+    image = models.CharField(max_length=200, default='https://web9.unl.edu.ar/noticias/img/thumbs/news/37787/foto%20peli_vga.jpg')
     number_visualizations = models.IntegerField(default=0)
     rating = models.FloatField(default=0)
 

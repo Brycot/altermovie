@@ -2,14 +2,27 @@
 
 {% block content %}
 
-<main>
-    <h1>AlterMovie</h1>
-    <p>Welcome to AlterMovie, my technical test for alternova</p>
-    <p>The app is fully made with Python + Django</p>
-    
-    <div>
-        <a href="">Login</a>
-        <a href="">Register</a>
+<main class="main-home position-relative container">
+    <section class="container  py-5">
+
+        <article class="justify-content-center d-flex flex-column gap-3">
+    <h1 class="fs-1 fw-bold">AlterMovie</h1>
+    <span>
+        <p class="fs-3 lh-1">Welcome to my technical test for Alternova</p>
+        <p class="fs-3 lh-1">The app is fully made with <span class="fw-bold text-success">Python</span> + <span class="fw-bold text-success">Django</span></p>
+    </span>
+    {% if not user.is_authenticated %}
+    <div class="d-flex gap-3">
+        <a class="bg-danger text-light px-4 py-2 rounded text-decoration-none" href="{% url 'signin'  %}">Sign In</a>
+        <a class="bg-danger text-light px-4 py-2 rounded text-decoration-none" href="{% url 'signup'  %}">Sign Up</a>
+    </div>
+    {% else %}
+    <a class="bg-danger text-light px-4 py-2 rounded text-decoration-none" style="width: 13rem" href="{% url 'productions'  %}">View Movies & Series</a>
+    {% endif %}
+        </article>
+    </section>
+    <div class="hex">
+        <img src="https://pics.filmaffinity.com/Interestelar-229339994-large.jpg" alt="">
     </div>
 </main>
 

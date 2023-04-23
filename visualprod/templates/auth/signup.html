@@ -1,0 +1,23 @@
+{% extends '../layout/layout.html' %} {% block content %}
+
+<main class="main-home position-relative container">
+    <section class="container py-5">
+        {{error}}
+        <h1>Create your account</h1>
+
+        <form class="d-flex flex-column" action="/signup/" method="POST">
+            {% csrf_token %} {{form.as_p}}
+            <button class="btn btn-danger" style="width: 9rem" type="submit">
+                Sign up
+            </button>
+        </form>
+    </section>
+    <div class="hex">
+        <img
+            src="https://fotografias.lasexta.com/clipping/cmsimages01/2021/12/09/47F3F486-BBE2-44CB-A3F3-2F495B33FCBE/98.jpg?crop=980,551,x0,y4&width=1900&height=1069&optimize=low&format=webply"
+            alt=""
+        />
+    </div>
+</main>
+
+{% endblock %}

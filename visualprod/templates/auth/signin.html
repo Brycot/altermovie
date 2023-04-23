@@ -1,9 +1,21 @@
-<h1>Signin</h1>
+{% extends '../layout/layout.html' %} {% block content %}
 
-{{error}}
+<main class="main-home position-relative container">
+    <section class="container py-5">
+        {{error}}
+        <h1>Login to your account</h1>
 
-<form action="/signin/" method="POST">
-    {% csrf_token %} 
-    {{form.as_p}}
-    <button class="btn btn-primary" type="submit">Signin</button>
-</form>
+        <form class="d-flex flex-column" action="/signin/" method="POST">
+            {% csrf_token %} {{form.as_p}}
+            <button class="btn btn-danger" style="width: 9rem" type="submit">Sign in</button>
+        </form>
+    </section>
+    <div class="hex">
+        <img
+            src="https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/joseph-quinn-as-eddie-munson-stranger-things-season-4-2-1653998700.jpg?crop=0.646xw:0.652xh;0.159xw,0.0258xh&resize=1200:*"
+            alt=""
+        />
+    </div>
+</main>
+
+{% endblock %}
